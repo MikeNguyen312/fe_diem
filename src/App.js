@@ -12,7 +12,6 @@ import DangKyMonHoc from './trangsv/DangKyMonHoc';
 import XemDiem from './trangsv/XemDiem';
 import MonHoc from './trangpdt/MonHoc';
 import Register from './trangpdt/Register';
-
 import './App.css';
 
 function PrivateRoute({ element, isAuthenticated }) {

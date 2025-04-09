@@ -42,13 +42,13 @@ function Diem() {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    if (!formData.ma_sv || !formData.ma_lop_mh || !formData.diem_cc || !formData.diem_gk || !formData.diem_ck) {
+    if (!formData.ma_diem || !formData.ma_sv || !formData.ma_lop_mh || !formData.diem_cc || !formData.diem_gk || !formData.diem_ck) {
       setError("Vui lòng điền đầy đủ thông tin");
       return;
     }
     try {
       const token = localStorage.getItem("token");
-      await axios.post(API_BASE_URL, formData, {
+      await axios.post(`${API_BASE_URL}`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchScores();
@@ -56,13 +56,13 @@ function Diem() {
       setSuccessMessage("Thêm điểm thành công!");
       setTimeout(() => setSuccessMessage(""), 1000);
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        setError("Mã sinh viên không tồn tại.");
-      } else if (error.response && error.response.status === 500) {
-        setError("Lỗi hệ thống. Vui lòng thử lại sau.");
-      } else {
-        setError("Lỗi khi thêm điểm: " + error.message);
-      }
+      // if (error.response && error.response.status === 400) {
+      //   setError("Mã sinh viên không tồn tại.");
+      // } else if (error.response && error.response.status === 500) {
+      //   setError("Lỗi hệ thống. Vui lòng thử lại sau.");
+      // } else {
+      //   setError("Lỗi khi thêm điểm: " + error.message);
+      // }
       console.error("Lỗi khi thêm điểm:", error);
     }
   };
@@ -91,6 +91,7 @@ function Diem() {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("token");
+      console.log(token);
       await axios.delete(`${API_BASE_URL}/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -147,6 +148,13 @@ function Diem() {
       {error && <div className="diem-manager-error-message">{error}</div>}
       {successMessage && <div className="diem-manager-success-message">{successMessage}</div>}
       <form className="diem-manager-form-container">
+      <input
+          type="text"
+          name="ma_diem"
+          placeholder="Mã Điểm"
+          value={formData.ma_diem}
+          onChange={(e) => setFormData({ ...formData, ma_diem: e.target.value })}
+        />
         <input
           type="text"
           name="ma_sv"
@@ -217,6 +225,7 @@ function Diem() {
       <table className="diem-manager-scores-table">
         <thead>
           <tr>
+            <th>Mã Điểm</th>
             <th>Mã SV</th>
             <th>Mã lớp môn học</th>
             <th>Điểm CC</th>
@@ -229,6 +238,7 @@ function Diem() {
         <tbody>
           {filteredScores.map((score) => (
             <tr key={score.id}>
+              <td>{score.ma_diem}</td>
               <td>{score.ma_sv}</td>
               <td>{score.ma_lop_mh}</td>
               <td>{score.diem_cc}</td>
