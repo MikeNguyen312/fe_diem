@@ -53,11 +53,11 @@
 .diem-manager-button:hover {
     background-color: #1999d0;
 }
-/* button:disabled {
+button:disabled {
     background-color: #d3d3d3;  
     cursor: not-allowed; 
     color: #808080;  
-  } */
+  }
 /* Thông báo thành công và lỗi */
 .diem-manager-success-message {
     background-color: #4caf50;
@@ -130,6 +130,9 @@
     font-size: 16px;
 }
 
+.diem-manager-form-container input::placeholder {
+    color: #888;
+}
 
 /* Khi màn hình nhỏ, thay đổi form layout */
 @media (max-width: 768px) {
