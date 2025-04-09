@@ -1,0 +1,161 @@
+/* .monhoc-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+  } */
+  
+  /* Form nhập liệu */
+  .form-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Các input */
+  .form-container input {
+    width: 250px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  .form-container input:focus {
+    border-color: #4caf50;
+  }
+  
+  /* Nút thêm và cập nhật */
+  button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Thông báo thành công và lỗi */
+  .monhoc-success-message {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .monhoc-error-message {
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Bảng dữ liệu môn học */
+  .subject-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .subject-table th, .subject-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+  }
+  
+  .subject-table th {
+    background-color: #f1f1f1;
+    font-weight: 600;
+  }
+  
+  .subject-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .subject-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .subject-table button {
+    background-color: #f44336;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .subject-table button:hover {
+    background-color: #e53935;
+  }
+  
+  .subject-table td button:first-child {
+    background-color: #ffa500;
+  }
+  
+  .subject-table td button:first-child:hover {
+    background-color: #ff9800;
+  }
+  
+  /* Cải thiện sự trình bày của các input trong form */
+  .form-container input {
+    font-size: 16px;
+  }
+  
+  .form-container input::placeholder {
+    color: #888;
+  }
+  
+  @media (max-width: 768px) {
+    /* Khi màn hình nhỏ, thay đổi form layout */
+    .form-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  /* Tìm kiếm */
+.search-container {
+    display: flex;
+    justify-content: flex-end; /* Di chuyển thanh tìm kiếm sang bên phải */
+    margin-bottom: 20px;
+  }
+  
+  .search-container input {
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 300px;
+    margin-right: 10px; /* Thêm khoảng cách bên phải */
+  }
+  

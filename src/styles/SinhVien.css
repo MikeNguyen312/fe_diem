@@ -1,0 +1,175 @@
+/* .sinhvien-manager-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+.sinhvien-manager-container h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 1px;
+} */
+
+/* Các input */
+.sinhvien-form input {
+    width: 100%; 
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border 0.3s ease;
+}
+.form-container select{
+    width: 10%; 
+    padding: 12px;
+    height: 43px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border 0.3s ease;
+}
+/* Input focus */
+.sinhvien-form input:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.sinhvien-form input::placeholder {
+    color: #888;
+}
+
+/* Nút thêm và cập nhật */
+.sinhvien-form button {
+    padding: 12px 25px;
+    background-color: #2a51c4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    align-self: flex-end;  /* Căn phải cho nút */
+}
+
+.sinhvien-form button:hover {
+    background-color: #1999d0;
+    transform: translateY(-2px);
+}
+
+.sinhvien-manager-container button:disabled {
+  background-color: #d3d3d3;  
+  cursor: not-allowed; 
+  color: #353333;  
+}
+
+.sinhvien-success-message {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .sinhvien-error-message {
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-align: center;
+  }
+/* Tìm kiếm */
+.sinhvien-search {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 25px;
+}
+
+.sinhvien-search input {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 300px;
+    margin-right: 15px;
+    transition: border-color 0.3s ease;
+}
+
+.sinhvien-search input:focus {
+    border-color: #2a51c4;
+}
+
+/* Bảng sinh viên */
+.sinhvien-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.sinhvien-table th,
+.sinhvien-table td {
+    padding: 12px 18px;
+    border: 1px solid #ddd;
+}
+
+.sinhvien-table th {
+    background-color: #f1f1f1;
+    font-weight: 600;
+}
+
+.sinhvien-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.sinhvien-table tr:hover {
+    background-color: #e6f7ff;
+}
+
+.sinhvien-table button {
+    background-color: #f44336;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.sinhvien-table button:hover {
+    background-color: #e53935;
+    transform: translateY(-2px);
+}
+
+.sinhvien-table td button:first-child {
+    background-color: #ffa500;
+}
+
+.sinhvien-table td button:first-child:hover {
+    background-color: #ff9800;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sinhvien-form {
+        width: 90%;
+    }
+
+    .sinhvien-search {
+        justify-content: center;
+    }
+
+    .sinhvien-search input {
+        width: 100%;
+        margin-right: 0;
+    }
+}

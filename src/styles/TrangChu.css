@@ -1,0 +1,32 @@
+.info-list {
+  list-style: none;
+  padding-left: 20px;
+}
+
+.info-item {
+  margin: 10px 0;
+  position: relative;
+  padding-left: 15px;
+}
+
+.info-item::before {
+  content: "•"; 
+  color: black;
+  font-size: 18px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.info-link {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+}
+
+.info-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
