@@ -15,10 +15,9 @@ function ThanhDieuHuong() {
 
   return (
     <div className="navbar">
-      <Link to="/">TRANG CHỦ</Link>
-
       {role === 'SV' && (
         <>
+          <Link to="/">TRANG CHỦ</Link>
           <Link to="/dang-ky-mon-hoc">Đăng Ký Môn Học</Link>
           <Link to="/xem-diem">Xem Điểm</Link>
         </>

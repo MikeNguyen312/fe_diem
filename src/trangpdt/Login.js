@@ -50,7 +50,7 @@ function Login({ setIsAuthenticated }) {
                 navigate('/giangvien-dashboard');
                 break;
             case 'PDT':
-                navigate('/pdt-dashboard');
+                navigate('/trang-chu');
                 break;
             default:
                 navigate('/dashboard');
@@ -86,9 +86,6 @@ function Login({ setIsAuthenticated }) {
                         {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
                     </button>
                 </form>
-                <p className="register-link">
-                    Chưa có tài khoản? <Link to="/register">Đăng ký ngay</Link>
-                </p>
             </div>
         </div>
     );
