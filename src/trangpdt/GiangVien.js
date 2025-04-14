@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import '../styles/GiangVien.css'
+import '../styles/GiangVien.css';
 
-// Đổi sang URL production
 const API_BASE_URL = "https://server-quanlydiemsinhvien-production.up.railway.app/api/teachers";
+const API_SUBJECTS_URL = "https://server-quanlydiemsinhvien-production.up.railway.app/api/subjects";
 
 function GiangVien() {
   const [giangViens, setGiangViens] = useState([]);
@@ -11,12 +11,14 @@ function GiangVien() {
   const [hoTen, setHoTen] = useState("");
   const [email, setEmail] = useState("");
   const [maBoMon, setMaBoMon] = useState("");
+  const [subjects, setSubjects] = useState([]);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchGiangViens();
+    fetchSubjects();
   }, []);
 
   const fetchGiangViens = async () => {
@@ -31,19 +33,37 @@ function GiangVien() {
     }
   };
 
+  const fetchSubjects = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(API_SUBJECTS_URL, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const uniqueSubjects = Array.from(
+        new Set(response.data.map((subject) => subject.ma_bo_mon))
+      ).map((ma_bo_mon) =>
+        response.data.find((subject) => subject.ma_bo_mon === ma_bo_mon)
+      );
+      setSubjects(uniqueSubjects);
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách bộ môn:", error);
+    }
+  };
+
   const handleAddGiangVien = async () => {
     if (!maGv || !hoTen || !email || !maBoMon) {
       setError("Tất cả các trường đều phải được điền đầy đủ.");
       return;
     }
     try {
-      const response = await axios.post(
+      await axios.post(
         API_BASE_URL,
         { ma_gv: maGv, ho_ten: hoTen, email: email, ma_bo_mon: maBoMon },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
+      
       setMessage("Thêm giảng viên thành công!");
       fetchGiangViens();
       setMaGv("");
@@ -66,7 +86,7 @@ function GiangVien() {
 
   return (
     <div className="giangvien-container">
-      <h2 style={{ textAlign: "center" }}>Quản lý Giảng Viên</h2>
+      <h2 style={{ textAlign: "center" }}>Quản lí Giảng Viên</h2>
 
       {error && <div className="giangvien-error-message">{error}</div>}
       {message && <div className="giangvien-success-message">{message}</div>}
@@ -90,12 +110,17 @@ function GiangVien() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-          type="text"
-          placeholder="Mã bộ môn"
-          value={maBoMon}
-          onChange={(e) => setMaBoMon(e.target.value)}
-        />
+        <select className="chon" value={maBoMon} onChange={(e) => setMaBoMon(e.target.value)}>
+          <option value="">Chọn mã bộ môn</option>
+          {subjects.map((subject) => (
+            <option key={subject.ma_bo_mon} value={subject.ma_bo_mon}>
+              {subject.ma_bo_mon}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="them">
         <button onClick={handleAddGiangVien}>Thêm Giảng Viên</button>
       </div>
 

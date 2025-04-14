@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../styles/MonHoc.css"; // Nếu cần
+import "../styles/MonHoc.css";
 
 const API_BASE_URL = "https://server-quanlydiemsinhvien-production.up.railway.app/api/subjects";
 
 function MonHoc() {
   const [monHocs, setMonHocs] = useState([]);
+  const [dsBoMon, setDsBoMon] = useState([]);
   const [maMh, setMaMh] = useState("");
   const [tenMon, setTenMon] = useState("");
   const [soTinChi, setSoTinChi] = useState("");
@@ -17,6 +18,7 @@ function MonHoc() {
 
   useEffect(() => {
     fetchMonHocs();
+    fetchBoMons();
   }, []);
 
   const fetchMonHocs = async () => {
@@ -31,6 +33,18 @@ function MonHoc() {
     }
   };
 
+  const fetchBoMons = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${API_BASE_URL}/bo-mon/all`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setDsBoMon(response.data);
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách bộ môn:", error);
+    }
+  };
+
   const handleAddMonHoc = async () => {
     if (!maMh || !tenMon || !soTinChi || !maBoMon) {
       setError("Tất cả các trường đều phải được điền đầy đủ.");
@@ -38,7 +52,7 @@ function MonHoc() {
       return;
     }
     try {
-      const response = await axios.post(
+      await axios.post(
         API_BASE_URL,
         {
           ma_mh: maMh,
@@ -59,11 +73,10 @@ function MonHoc() {
       clearForm();
     } catch (error) {
       console.error("Lỗi khi thêm môn học:", error);
-      setError("Mã môn học không tồn tại.");
+      setError("Mã môn học đã tồn tại hoặc dữ liệu không hợp lệ.");
       setTimeout(() => setError(""), 1000);
     }
   };
-  
 
   const handleDeleteMonHoc = async (maMh) => {
     try {
@@ -95,7 +108,7 @@ function MonHoc() {
       return;
     }
     try {
-      const response = await axios.put(
+      await axios.put(
         `${API_BASE_URL}/${maMh}`,
         {
           ten_mon: tenMon,
@@ -121,6 +134,11 @@ function MonHoc() {
     }
   };
 
+  const handleCancelEdit = () => {
+    clearForm();
+    setIsEditing(false);
+  };
+
   const clearForm = () => {
     setMaMh("");
     setTenMon("");
@@ -140,7 +158,7 @@ function MonHoc() {
 
   return (
     <div className="monhoc-container">
-      <h2 style={{ textAlign: "center" }}>Quản lý Môn Học</h2>
+      <h2 style={{ textAlign: "center" }}>Quản lí Môn Học</h2>
 
       {error && <div className="monhoc-error-message">{error}</div>}
       {message && <div className="monhoc-success-message">{message}</div>}
@@ -151,6 +169,7 @@ function MonHoc() {
           placeholder="Mã môn học"
           value={maMh}
           onChange={(e) => setMaMh(e.target.value)}
+          disabled={isEditing}
         />
         <input
           type="text"
@@ -164,19 +183,32 @@ function MonHoc() {
           value={soTinChi}
           onChange={(e) => setSoTinChi(e.target.value)}
         />
-        <input
-          type="text"
-          placeholder="Mã bộ môn"
-          value={maBoMon}
+        <select
+          className="chon"
+          value={maBoMon} 
           onChange={(e) => setMaBoMon(e.target.value)}
-        />
+        > 
+          <option value="">Chọn Mã Bộ Môn</option>
+          {dsBoMon.map((boMon, index) => (
+            <option key={index} value={boMon.ma_bo_mon}>
+              {boMon.ma_bo_mon}
+            </option>
+          ))}
+        </select>
+      </div>
 
-        <button onClick={handleAddMonHoc} disabled={isEditing}>
+      <div className="button-group">
+        <button className="monhoc-button" onClick={handleAddMonHoc} disabled={isEditing}>
           Thêm Môn Học
         </button>
-        <button onClick={handleUpdateMonHoc} disabled={!isEditing}>
+        <button className="monhoc-button" onClick={handleUpdateMonHoc} disabled={!isEditing}>
           Cập Nhật Môn Học
         </button>
+        {isEditing && (
+          <button className="monhoc-button cancel-button" onClick={handleCancelEdit}>
+            Hủy
+          </button>
+        )}
       </div>
 
       <div className="search-container">

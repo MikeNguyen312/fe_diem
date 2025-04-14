@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import TrangChu from './trangpdt/TrangChu';
 import SinhVien from './trangpdt/SinhVien';
 import GiangVien from './trangpdt/GiangVien';
@@ -8,6 +7,11 @@ import Diem from './trangpdt/Diem';
 import ThanhDieuHuong from './thanh_phan/ThanhDieuHuong';
 import Login from './trangpdt/Login';
 import QuanLiLopMH from './tranggv/QuanLiLopMH';
+
+import TaoTaiKhoan from './trangpdt/TaoTaiKhoan';
+import LopMonHoc from './trangpdt/LopMonHoc';
+
+
 import QuanLiSinhVienLopMH from './tranggv/QuanLiSinhVienLopMH';
 import XemDiemGV from './tranggv/XemDiemGV';
 import XemThongTinGiangVien from './tranggv/XemThongTinGiangVien';
@@ -15,13 +19,12 @@ import DangKyMonHoc from './trangsv/DangKyMonHoc';
 import XemDiem from './trangsv/XemDiem';
 import XemThongTinSinhVien from './trangsv/XemThongTinSinhVien';
 import MonHoc from './trangpdt/MonHoc';
-import Register from './trangpdt/Register';
 import './App.css';
 
 function PrivateRoute({ element, isAuthenticated }) {
   return isAuthenticated ? element : <Navigate to="/login" />;
 }
-const API_BASE_URL = 'https://server-quanlydiemsinhvien-production.up.railway.app';
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [role, setRole] = useState('');
@@ -30,20 +33,12 @@ function App() {
     const token = localStorage.getItem('token');
     const savedRole = localStorage.getItem('role');
 
-    if (token) {
-      axios.get(`${API_BASE_URL}/api/auth/verify-token`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        setIsAuthenticated(true);
-        setRole(res.data.role || savedRole);
-      })
-      .catch(() => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
-        setIsAuthenticated(false);
-        setRole('');
-      });
+    if (token && savedRole) {
+      setIsAuthenticated(true);
+      setRole(savedRole);
+    } else {
+      setIsAuthenticated(false);
+      setRole('');
     }
   }, []);
 
@@ -61,7 +56,7 @@ function App() {
       case 'GV':
         return <Navigate to="/quan-li-lop-mh" />;
       case 'PDT':
-        return <Navigate to="/" />;
+        return <Navigate to="/diem" />;
       default:
         return <Navigate to="/login" />;
     }
@@ -92,10 +87,21 @@ function App() {
                 isAuthenticated ? redirectDashboardByRole() : <Login setIsAuthenticated={setIsAuthenticated} />
               }
             />
-            <Route path="/register" element={<Register />} />
-
-            {/* Các route bảo vệ bằng isAuthenticated */}
             <Route path="/" element={<PrivateRoute element={<TrangChu />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/sinh-vien" element={<PrivateRoute element={<SinhVien />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/giang-vien" element={<PrivateRoute element={<GiangVien />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/diem" element={<PrivateRoute element={<Diem />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/quan-li-lop-mh" element={<PrivateRoute element={<QuanLiLopMH />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/quan-li-sinh-vien-lop-mh" element={<PrivateRoute element={<QuanLiSinhVienLopMH />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/xem-diem-gv" element={<PrivateRoute element={<XemDiemGV />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/xem-thong-tin-gv" element={<PrivateRoute element={<XemThongTinGiangVien />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/dang-ky-mon-hoc" element={<PrivateRoute element={<DangKyMonHoc />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/xem-diem" element={<PrivateRoute element={<XemDiem />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/Xem-Thong-Tin-Sinh-Vien" element={<PrivateRoute element={<XemThongTinSinhVien />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/mon-hoc" element={<PrivateRoute element={<MonHoc />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/lop-mon-hoc" element={<PrivateRoute element={<LopMonHoc />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/tao-tai-khoan" element={<PrivateRoute element={<TaoTaiKhoan />} isAuthenticated={isAuthenticated} />} />
+
             <Route path="/sinh-vien" element={<PrivateRoute element={<SinhVien />} isAuthenticated={isAuthenticated} />} />
             <Route path="/giang-vien" element={<PrivateRoute element={<GiangVien />} isAuthenticated={isAuthenticated} />} />
             <Route path="/diem" element={<PrivateRoute element={<Diem />} isAuthenticated={isAuthenticated} />} />

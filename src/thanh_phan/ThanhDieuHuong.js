@@ -37,9 +37,11 @@ function ThanhDieuHuong() {
 
       {role === 'PDT' && (
         <>
+          <Link to="tao-tai-khoan">QUẢN LÍ TÀI KHOẢN</Link>
           <Link to="/sinh-vien">QUẢN LÍ SINH VIÊN</Link>
           <Link to="/giang-vien">QUẢN LÍ GIẢNG VIÊN</Link>
           <Link to="/mon-hoc">QUẢN LÍ MÔN HỌC</Link>
+          <Link to="/lop-mon-hoc">QUẢN LÍ LỚP MÔN HỌC</Link>
           <Link to="/diem">QUẢN LÍ ĐIỂM</Link>
         </>
       )}

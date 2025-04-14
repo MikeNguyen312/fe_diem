@@ -6,6 +6,8 @@ const API_BASE_URL = "https://server-quanlydiemsinhvien-production.up.railway.ap
 
 function Diem() {
   const [scores, setScores] = useState([]);
+  const [students, setStudents] = useState([]);
+  const [classes, setClasses] = useState([]);
   const [formData, setFormData] = useState({
     ma_diem: "",
     ma_sv: "",
@@ -13,7 +15,7 @@ function Diem() {
     diem_cc: "",
     diem_gk: "",
     diem_ck: "",
-    ma_pdt: "",
+    ma_pdt: "PDT01",
   });
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -23,20 +25,47 @@ function Diem() {
 
   useEffect(() => {
     fetchScores();
+    fetchData();
   }, []);
 
   const fetchScores = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(API_BASE_URL, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-      console.log("Dữ liệu từ backend:", response.data);
       setScores(response.data);
     } catch (error) {
       console.error("Lỗi khi lấy điểm:", error);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const [studentsRes, classesRes] = await Promise.all([
+        axios.get("https://server-quanlydiemsinhvien-production.up.railway.app/api/students", {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        axios.get("https://server-quanlydiemsinhvien-production.up.railway.app/api/class-subject", {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      ]);
+
+      if (Array.isArray(studentsRes.data)) {
+        setStudents(studentsRes.data);
+      } else {
+        console.error("Dữ liệu sinh viên không phải là mảng");
+        setStudents([]);
+      }
+      if (Array.isArray(classesRes.data.data)) {
+        setClasses(classesRes.data.data); 
+      } else {
+        console.error("class-subject không trả về mảng hoặc không có data");
+        setClasses([]);
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy dữ liệu:", error);
     }
   };
 
@@ -54,16 +83,10 @@ function Diem() {
       fetchScores();
       resetForm();
       setSuccessMessage("Thêm điểm thành công!");
-      setTimeout(() => setSuccessMessage(""), 1000);
+      setTimeout(() => setSuccessMessage(""), 1500);
     } catch (error) {
-      // if (error.response && error.response.status === 400) {
-      //   setError("Mã sinh viên không tồn tại.");
-      // } else if (error.response && error.response.status === 500) {
-      //   setError("Lỗi hệ thống. Vui lòng thử lại sau.");
-      // } else {
-      //   setError("Lỗi khi thêm điểm: " + error.message);
-      // }
-      console.error("Lỗi khi thêm điểm:", error);
+      setError("Lỗi khi thêm điểm: " + error.message);
+      setTimeout(() => setSuccessMessage(""), 1500);
     }
   };
 
@@ -81,26 +104,25 @@ function Diem() {
       fetchScores();
       resetForm();
       setSuccessMessage("Cập nhật điểm thành công!");
-      setTimeout(() => setSuccessMessage(""), 1000);
+      setTimeout(() => setSuccessMessage(""), 1500);
     } catch (error) {
       setError("Lỗi khi sửa điểm");
-      console.error(error);
+      setTimeout(() => setSuccessMessage(""), 1500);
     }
   };
 
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      console.log(token);
       await axios.delete(`${API_BASE_URL}/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchScores();
       setSuccessMessage("Xóa điểm thành công!");
-      setTimeout(() => setSuccessMessage(""), 1000);
+      setTimeout(() => setSuccessMessage(""), 1500);
     } catch (error) {
-      setError(`Lỗi khi xóa điểm: ${error.response?.data?.message || error.message}`);
-      console.error("Lỗi khi xóa điểm:", error);
+      setError(`Lỗi khi xóa điểm: ${error.message}`);
+      setTimeout(() => setSuccessMessage(""), 1500);
     }
   };
 
@@ -117,7 +139,7 @@ function Diem() {
       ma_pdt: score.ma_pdt,
     });
   };
-
+  
   const resetForm = () => {
     setIsEditing(false);
     setSelectedId(null);
@@ -128,10 +150,11 @@ function Diem() {
       diem_cc: "",
       diem_gk: "",
       diem_ck: "",
-      ma_pdt: "",
+      ma_pdt: "PDT01",
     });
     setError("");
   };
+  
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
@@ -144,38 +167,42 @@ function Diem() {
 
   return (
     <div className="diem-manager-container">
-      <h2>Quản lý điểm</h2>
+      <h2>Quản lí điểm</h2>
       {error && <div className="diem-manager-error-message">{error}</div>}
       {successMessage && <div className="diem-manager-success-message">{successMessage}</div>}
+      
       <form className="diem-manager-form-container">
-      <input
+        <input
           type="text"
           name="ma_diem"
           placeholder="Mã Điểm"
           value={formData.ma_diem}
           onChange={(e) => setFormData({ ...formData, ma_diem: e.target.value })}
         />
-        <input
-          type="text"
+        <select
           name="ma_sv"
-          placeholder="Mã SV"
           value={formData.ma_sv}
           onChange={(e) => setFormData({ ...formData, ma_sv: e.target.value })}
-        />
-        <input
-          type="text"
+        >
+          <option value="">Chọn Mã Sinh Viên</option>
+          {students.map((student) => (
+            <option key={student.ma_sv} value={student.ma_sv}>
+              {student.ho_ten} - {student.ma_sv}
+            </option>
+          ))}
+        </select>
+        <select
           name="ma_lop_mh"
-          placeholder="Mã lớp môn học"
           value={formData.ma_lop_mh}
           onChange={(e) => setFormData({ ...formData, ma_lop_mh: e.target.value })}
-        />
-        <input
-          type="text"
-          name="ma_pdt"
-          placeholder="Mã PDT"
-          value={formData.ma_pdt}
-          onChange={(e) => setFormData({ ...formData, ma_pdt: e.target.value })}
-        />
+        >
+          <option value="">Chọn Mã Lớp Môn Học</option>
+          {classes.map((cls) => (
+            <option key={cls.ma_lop_mh} value={cls.ma_lop_mh}>
+              {cls.ma_lop_mh} - Môn: {cls.ma_mh} - GV: {cls.ma_gv}
+            </option>
+          ))}
+        </select>
         <input
           type="number"
           name="diem_cc"
@@ -197,6 +224,13 @@ function Diem() {
           value={formData.diem_ck}
           onChange={(e) => setFormData({ ...formData, diem_ck: e.target.value })}
         />
+        <select
+          name="ma_pdt"
+          value={formData.ma_pdt}
+          onChange={(e) => setFormData({ ...formData, ma_pdt: e.target.value })}
+        >
+          <option value="PDT01">PDT01</option>
+        </select>
         <button
           type="button"
           className="diem-manager-button"
@@ -213,7 +247,18 @@ function Diem() {
         >
           Cập nhật điểm
         </button>
+        {isEditing && (
+          <button
+            type="button"
+            className="diem-manager-button cancel-button"
+            onClick={resetForm}
+          >
+            Hủy
+          </button>
+        )}
       </form>
+
+
       <div className="diem-manager-search-container">
         <input
           type="text"
@@ -222,6 +267,7 @@ function Diem() {
           onChange={handleSearchChange}
         />
       </div>
+
       <table className="diem-manager-scores-table">
         <thead>
           <tr>

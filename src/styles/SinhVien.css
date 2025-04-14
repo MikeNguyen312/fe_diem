@@ -1,24 +1,5 @@
-/* .sinhvien-manager-container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-.sinhvien-manager-container h2 {
-    color: #333;
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: 1px;
-} */
-
-/* Các input */
 .sinhvien-form input {
-    width: 100%; 
+    width: 30%; 
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -26,7 +7,12 @@
     outline: none;
     transition: border 0.3s ease;
 }
-.form-container select{
+.sinhvien-form input:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+select.chon{
     width: 10%; 
     padding: 12px;
     height: 43px;
@@ -36,17 +22,12 @@
     outline: none;
     transition: border 0.3s ease;
 }
-/* Input focus */
-.sinhvien-form input:focus {
-    border-color: #4caf50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+div.form-duoi{
+    margin-left: 250px;
 }
-
 .sinhvien-form input::placeholder {
     color: #888;
 }
-
-/* Nút thêm và cập nhật */
 .sinhvien-form button {
     padding: 12px 25px;
     background-color: #2a51c4;
@@ -56,12 +37,11 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    align-self: flex-end;  /* Căn phải cho nút */
+    align-self: flex-end;  
 }
 
 .sinhvien-form button:hover {
     background-color: #1999d0;
-    transform: translateY(-2px);
 }
 
 .sinhvien-manager-container button:disabled {
@@ -70,6 +50,23 @@
   color: #353333;  
 }
 
+.sinhvien-button.cancel-button{
+    background-color: #f44336;
+    color: white;
+    margin-left: 10px;
+}
+
+.search-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+.search-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
 .sinhvien-success-message {
     background-color: #4CAF50;
     color: white;

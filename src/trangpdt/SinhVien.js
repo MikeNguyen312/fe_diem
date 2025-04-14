@@ -3,9 +3,12 @@ import axios from "axios";
 import "../styles/SinhVien.css";
 
 const API_BASE_URL = "https://server-quanlydiemsinhvien-production.up.railway.app/api/students";
+const CLASS_API_URL = "https://server-quanlydiemsinhvien-production.up.railway.app/api/class-subject/getAllClass";
 
 function SinhVien() {
   const [students, setStudents] = useState([]);
+  const [classList, setClassList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [formData, setFormData] = useState({
     ma_sv: "",
     ho_ten: "",
@@ -21,6 +24,7 @@ function SinhVien() {
 
   useEffect(() => {
     fetchStudents();
+    fetchClassList();
   }, []);
 
   const fetchStudents = async () => {
@@ -37,6 +41,39 @@ function SinhVien() {
     }
   };
 
+  const fetchClassList = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(CLASS_API_URL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data.success) {
+        setClassList(response.data.data);
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách lớp:", error);
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const resetForm = () => {
+    setFormData({
+      ma_sv: "",
+      ho_ten: "",
+      ngay_sinh: "",
+      gioi_tinh: "Nam",
+      email: "",
+      ma_lop: "",
+    });
+    setIsEditing(false);
+    setSelectedId(null);
+  };
+
   const handleAdd = async (e) => {
     e.preventDefault();
     if (!formData.ma_sv || !formData.ho_ten || !formData.ngay_sinh || !formData.email || !formData.ma_lop) {
@@ -44,6 +81,7 @@ function SinhVien() {
       setTimeout(() => setError(""), 1000);
       return;
     }
+
     try {
       const existingStudent = students.find((student) => student.ma_sv === formData.ma_sv);
       if (existingStudent) {
@@ -105,49 +143,45 @@ function SinhVien() {
       console.error(error);
     }
   };
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`; 
+  };
+  
   const handleEditClick = (student) => {
     setIsEditing(true);
     setSelectedId(student.id);
     setFormData({
       ma_sv: student.ma_sv,
       ho_ten: student.ho_ten,
-      ngay_sinh: student.ngay_sinh.split("T")[0],
+      ngay_sinh: formatDate(student.ngay_sinh), 
       gioi_tinh: student.gioi_tinh,
       email: student.email,
       ma_lop: student.ma_lop,
     });
   };
+  
 
-  const resetForm = () => {
-    setIsEditing(false);
-    setSelectedId(null);
-    setFormData({
-      ma_sv: "",
-      ho_ten: "",
-      ngay_sinh: "",
-      gioi_tinh: "Nam",
-      email: "",
-      ma_lop: "",
-    });
-    setError("");
-    setTimeout(() => setSuccessMessage(""), 1000);
+  const handleCancel = () => {
+    resetForm();
   };
 
   return (
     <div className="sinhvien-manager-container">
-      <h2>Quản lý sinh viên</h2>
+      <h2>Quản lí sinh viên</h2>
 
-      {error && <div className="sinhvien-error-message">{error}</div>}
-      {successMessage && <div className="sinhvien-success-message">{successMessage}</div>}
-
-      <form className="form-container">
+      {error && <p className="sinhvien-error-message">{error}</p>}
+      {successMessage && <p className="sinhvien-success-message">{successMessage}</p>}
+      <form className="sinhvien-form">
         <input
           type="text"
           name="ma_sv"
-          placeholder="Mã SV"
+          placeholder="Mã sinh viên"
           value={formData.ma_sv}
-          onChange={(e) => setFormData({ ...formData, ma_sv: e.target.value })}
+          onChange={handleChange}
           disabled={isEditing}
         />
         <input
@@ -155,75 +189,107 @@ function SinhVien() {
           name="ho_ten"
           placeholder="Họ tên"
           value={formData.ho_ten}
-          onChange={(e) => setFormData({ ...formData, ho_ten: e.target.value })}
+          onChange={handleChange}
         />
         <input
           type="date"
           name="ngay_sinh"
           value={formData.ngay_sinh}
-          onChange={(e) => setFormData({ ...formData, ngay_sinh: e.target.value })}
+          onChange={handleChange}
         />
-        <select
-          name="gioi_tinh"
-          value={formData.gioi_tinh}
-          onChange={(e) => setFormData({ ...formData, gioi_tinh: e.target.value })}
-        >
-          <option value="Nam">Nam</option>
-          <option value="Nữ">Nữ</option>
-        </select>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        />
-        <input
-          type="text"
-          name="ma_lop"
-          placeholder="Mã lớp"
-          value={formData.ma_lop}
-          onChange={(e) => setFormData({ ...formData, ma_lop: e.target.value })}
-        />
-
-        <button type="button" onClick={handleAdd} disabled={isEditing}>
-          Thêm sinh viên
-        </button>
-
-        <button type="button" onClick={handleEdit} disabled={!isEditing}>
-          Cập nhật sinh viên
-        </button>
+        <div className="form-duoi">
+          <select className="chon" name="gioi_tinh" value={formData.gioi_tinh} onChange={handleChange}>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+          </select>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <select className="chon" name="ma_lop" value={formData.ma_lop} onChange={handleChange}>
+            <option value="">Chọn lớp</option>
+            {classList.map((lop) => (
+              <option key={lop.ma_lop} value={lop.ma_lop}>
+                {lop.ma_lop}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-container">
+          {!isEditing && (
+            <button type="button" onClick={handleAdd}>
+              Thêm sinh viên
+            </button>
+          )}
+          {isEditing && (
+            <>
+              <button type="button" onClick={handleEdit}>
+                Cập nhật sinh viên
+              </button>
+              <button
+                type="button"
+                className="sinhvien-button cancel-button"
+                onClick={handleCancel}
+              >
+                Hủy
+              </button>
+            </>
+          )}
+        </div>
       </form>
 
-      <table className="sinhvien-table">
-        <thead>
-          <tr>
-            <th>Mã SV</th>
-            <th>Họ tên</th>
-            <th>Ngày sinh</th>
-            <th>Giới tính</th>
-            <th>Email</th>
-            <th>Mã lớp</th>
-            <th>Thao tác</th>
-          </tr>
-        </thead>
-        <tbody>
-          {students.map((student) => (
-            <tr key={student.id}>
-              <td>{student.ma_sv}</td>
-              <td>{student.ho_ten}</td>
-              <td>{student.ngay_sinh ? student.ngay_sinh.split("T")[0] : ""}</td>
-              <td>{student.gioi_tinh}</td>
-              <td>{student.email}</td>
-              <td>{student.ma_lop}</td>
-              <td>
-                <button onClick={() => handleEditClick(student)}>Sửa</button>
-                <button onClick={() => handleDelete(student.id)}>Xóa</button>
-              </td>
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Tìm kiếm theo mã SV hoặc họ tên"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-input"
+          style={{ padding: "8px", width: "250px" }}
+        />
+      </div>
+
+      <div className="sinhvien-table-container">
+        <table className="sinhvien-table">
+          <thead>
+            <tr>
+              <th>Mã SV</th>
+              <th>Họ tên</th>
+              <th>Ngày sinh</th>
+              <th>Giới tính</th>
+              <th>Email</th>
+              <th>Mã lớp</th>
+              <th>Hành động</th>
             </tr>
+          </thead>
+          <tbody>
+          {students
+            .filter(
+              (sv) =>
+                sv.ma_sv.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                sv.ho_ten.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+            .map((sv) => (
+              <tr key={sv.ma_sv}>
+                <td>{sv.ma_sv}</td>
+                <td>{sv.ho_ten}</td>
+                <td>{sv.ngay_sinh}</td>
+                <td>{sv.gioi_tinh}</td>
+                <td>{sv.email}</td>
+                <td>{sv.ma_lop}</td>
+                <td>
+                  <button onClick={() => handleEditClick(sv)}>Sửa</button>
+                  <button onClick={() => handleDelete(sv.id)}>Xóa</button>
+                </td>
+              </tr>
           ))}
-        </tbody>
-      </table>
+
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

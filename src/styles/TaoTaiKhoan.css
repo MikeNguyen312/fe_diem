@@ -1,0 +1,136 @@
+.taikhoan-manager-form-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.taikhoan-manager-form-container input{
+  width: 250px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+}
+.taikhoan-manager-button {
+  padding: 10px 20px;
+  background-color: #2a51c4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.taikhoan-manager-button:hover {
+  background-color: #1999d0;
+}
+
+.taikhoan-manager-button.cancel-button {
+  background-color: #f44336;
+  color: white;
+  margin-left: 10px;
+}
+
+button:disabled {
+  background-color: #d3d3d3;
+  cursor: not-allowed;
+  color: #808080;
+}
+.search-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+.search-input {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px;
+}
+.taikhoan-manager-success-message {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.taikhoan-manager-error-message {
+  background-color: #f44336;
+  color: white;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.taikhoan-manager-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.taikhoan-manager-table th,
+.taikhoan-manager-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+}
+
+.taikhoan-manager-table th {
+  background-color: #f1f1f1;
+  font-weight: 600;
+}
+
+.taikhoan-manager-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.taikhoan-manager-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.taikhoan-manager-table button {
+  background-color: #f44336;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.taikhoan-manager-table button:hover {
+  background-color: #e53935;
+}
+
+.taikhoan-manager-table td button:first-child {
+  background-color: #ffa500;
+}
+
+.taikhoan-manager-table td button:first-child:hover {
+  background-color: #ff9800;
+}
+.success-message {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.error-message {
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
