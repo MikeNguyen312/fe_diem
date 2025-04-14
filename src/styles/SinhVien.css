@@ -1,5 +1,14 @@
+.sinhvien-form{
+  padding: 20px;
+  max-width: 100%;
+  margin: auto;
+  font-family: Arial, sans-serif;
+}
+div.form-tren{
+    margin-left: 200px;
+    margin-bottom: 20px;
+}
 .sinhvien-form input {
-    width: 30%; 
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -14,7 +23,6 @@
 
 select.chon{
     width: 10%; 
-    padding: 12px;
     height: 43px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -24,6 +32,10 @@ select.chon{
 }
 div.form-duoi{
     margin-left: 250px;
+    padding-bottom: 3%;
+}
+div.form-duoi input{
+    margin: 0 20px 0 20px;
 }
 .sinhvien-form input::placeholder {
     color: #888;
@@ -84,7 +96,7 @@ div.form-duoi{
     border-radius: 5px;
     text-align: center;
   }
-/* Tìm kiếm */
+  
 .sinhvien-search {
     display: flex;
     justify-content: flex-end;

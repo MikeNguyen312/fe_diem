@@ -176,6 +176,7 @@ function SinhVien() {
       {error && <p className="sinhvien-error-message">{error}</p>}
       {successMessage && <p className="sinhvien-success-message">{successMessage}</p>}
       <form className="sinhvien-form">
+      <div className="form-tren">
         <input
           type="text"
           name="ma_sv"
@@ -197,6 +198,7 @@ function SinhVien() {
           value={formData.ngay_sinh}
           onChange={handleChange}
         />
+      </div>
         <div className="form-duoi">
           <select className="chon" name="gioi_tinh" value={formData.gioi_tinh} onChange={handleChange}>
             <option value="Nam">Nam</option>
