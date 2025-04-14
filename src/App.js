@@ -8,8 +8,12 @@ import Diem from './trangpdt/Diem';
 import ThanhDieuHuong from './thanh_phan/ThanhDieuHuong';
 import Login from './trangpdt/Login';
 import QuanLiLopMH from './tranggv/QuanLiLopMH';
+import QuanLiSinhVienLopMH from './tranggv/QuanLiSinhVienLopMH';
+import XemDiemGV from './tranggv/XemDiemGV';
+import XemThongTinGiangVien from './tranggv/XemThongTinGiangVien';
 import DangKyMonHoc from './trangsv/DangKyMonHoc';
 import XemDiem from './trangsv/XemDiem';
+import XemThongTinSinhVien from './trangsv/XemThongTinSinhVien';
 import MonHoc from './trangpdt/MonHoc';
 import Register from './trangpdt/Register';
 import './App.css';
@@ -96,8 +100,12 @@ function App() {
             <Route path="/giang-vien" element={<PrivateRoute element={<GiangVien />} isAuthenticated={isAuthenticated} />} />
             <Route path="/diem" element={<PrivateRoute element={<Diem />} isAuthenticated={isAuthenticated} />} />
             <Route path="/quan-li-lop-mh" element={<PrivateRoute element={<QuanLiLopMH />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/quan-li-sinh-vien-lop-mh" element={<PrivateRoute element={<QuanLiSinhVienLopMH />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/xem-diem-gv" element={<PrivateRoute element={<XemDiemGV />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/xem-thong-tin-gv" element={<PrivateRoute element={<XemThongTinGiangVien />} isAuthenticated={isAuthenticated} />} />
             <Route path="/dang-ky-mon-hoc" element={<PrivateRoute element={<DangKyMonHoc />} isAuthenticated={isAuthenticated} />} />
             <Route path="/xem-diem" element={<PrivateRoute element={<XemDiem />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/Xem-Thong-Tin-Sinh-Vien" element={<PrivateRoute element={<XemThongTinSinhVien />} isAuthenticated={isAuthenticated} />} />
             <Route path="/mon-hoc" element={<PrivateRoute element={<MonHoc />} isAuthenticated={isAuthenticated} />} />
           </Routes>
         </div>

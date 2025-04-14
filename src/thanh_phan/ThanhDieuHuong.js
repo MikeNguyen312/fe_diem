@@ -15,19 +15,23 @@ function ThanhDieuHuong() {
 
   return (
     <div className="navbar">
+
+          <Link to="/">Trang Chủ</Link>
+
       {role === 'SV' && (
         <>
-          <Link to="/">TRANG CHỦ</Link>
           <Link to="/dang-ky-mon-hoc">Đăng Ký Môn Học</Link>
           <Link to="/xem-diem">Xem Điểm</Link>
+          <Link to="/xem-thong-tin-sinh-vien">thông tin sinh viên</Link>
         </>
       )}
 
       {role === 'GV' && (
         <>
+          <Link to="/quan-li-sinh-vien-lop-mh">sinh viên lớp môn học</Link>
           <Link to="/quan-li-lop-mh">Quản lí lớp môn học</Link>
-          <Link to="/sinh-vien">Sinh Viên</Link>
-          <Link to="/diem">ĐIỂM</Link>
+          <Link to="/xem-diem-gv">Xem Điểm</Link>
+          <Link to="/xem-thong-tin-gv">Thông Tin Giảng Viên</Link>
         </>
       )}
 

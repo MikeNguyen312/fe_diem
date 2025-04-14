@@ -1,62 +1,27 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #f7f9fc;
-    font-family: "Segoe UI", sans-serif;
-  }
-  
-  .sv-container {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 24px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1 {
-    text-align: center;
-    font-size: 32px;
-    color: #2c3e50;
-    margin-bottom: 24px;
-  }
-  
-  .info-box {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px 32px;
-    background-color: #f0f4f8;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 32px;
-    font-size: 16px;
-  }
-  
-  h2 {
-    font-size: 24px;
-    margin-bottom: 16px;
-    color: #34495e;
-  }
-  
-  .diem-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 16px;
-  }
-  
-  .diem-table th,
-  .diem-table td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: center;
-  }
-  
-  .diem-table thead {
-    background-color: #eaf0f6;
-    font-weight: bold;
-  }
-  
-  .diem-table tr:hover {
-    background-color: #f9f9f9;
-  }
-  
+.xem-diem-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.diem-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.diem-table th,
+.diem-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.diem-table th {
+  background-color: #f2f2f2;
+}
+
+.error {
+  color: red;
+}
