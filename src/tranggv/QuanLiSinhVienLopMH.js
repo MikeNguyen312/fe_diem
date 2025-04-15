@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../stylesgv/QuanLiSinhVienLopMH.css';
 
@@ -8,12 +8,35 @@ const QuanLiSinhVienLopMH = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Kiểm tra thông tin khi trang được tải lại
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const magv = localStorage.getItem("magv");
+
+    if (!token || !magv) {
+      setError('Bạn chưa đăng nhập hoặc không tìm thấy mã giảng viên.');
+    } else {
+      setError('');
+    }
+  }, []);
+
   const handleFetchSinhVien = async () => {
     const token = localStorage.getItem("token");
-    const maGv = localStorage.getItem("magv");
+    const magv = localStorage.getItem("magv");
 
-    if (!token || !maGv || !maLopMH) {
-      setError('Vui lòng đăng nhập và nhập mã lớp môn học.');
+    // Kiểm tra token, mã giảng viên và mã lớp môn học
+    if (!token) {
+      setError('Bạn chưa đăng nhập.');
+      return;
+    }
+
+    if (!magv) {
+      setError('Không tìm thấy mã giảng viên. Vui lòng đăng nhập lại.');
+      return;
+    }
+
+    if (!maLopMH) {
+      setError('Vui lòng nhập mã lớp môn học.');
       return;
     }
 
@@ -23,11 +46,10 @@ const QuanLiSinhVienLopMH = () => {
 
     try {
       const response = await axios.get(
-        `https://server-quanlydiemsinhvien-production.up.railway.app/api/teachers/${maGv}/lop-mon-hoc/${maLopMH}/sinh-vien`,
+        `https://server-quanlydiemsinhvien-production.up.railway.app/api/teachers/${magv}/lop-mon-hoc/${maLopMH}/sinh-vien`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            // Optional: Thêm Accept để đảm bảo response JSON
             Accept: 'application/json',
           },
         }
