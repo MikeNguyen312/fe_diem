@@ -27,11 +27,12 @@ function Login({ setIsAuthenticated }) {
         try {
             const response = await axios.post(API_LOGIN_URL, { username, password });
 
-            const { token, role ,magv } = response.data;
+            const { token, role ,magv ,masv } = response.data;
 
             localStorage.setItem('token', token);
             localStorage.setItem('role', role);
-            localStorage.setItem('magv',magv);
+            localStorage.setItem('magv', magv);
+            localStorage.setItem('masv', masv);
             setIsAuthenticated(true);
 
             redirectToDashboard(role);

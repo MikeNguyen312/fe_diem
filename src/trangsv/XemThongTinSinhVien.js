@@ -10,17 +10,17 @@ const XemThongTinSinhVien = () => {
 
   useEffect(() => {
     const fetchStudentInfo = async () => {
-      const ma_sv = localStorage.getItem("ma_sv");
+      const masv = localStorage.getItem("masv");
       const token = localStorage.getItem("token");
 
-      if (!ma_sv || !token) {
+      if (!masv || !token) {
         setError("Không tìm thấy mã sinh viên hoặc token.");
         return;
       }
 
       try {
         // Gọi trực tiếp API với mã sinh viên
-        const response = await axios.get(`${API_BASE_URL}/${ma_sv}`, {
+        const response = await axios.get(`${API_BASE_URL}/${masv}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

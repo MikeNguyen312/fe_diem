@@ -11,13 +11,13 @@ const DangKyMonHoc = () => {
     const [deleteMaLopMH, setDeleteMaLopMH] = useState("");
     const [message, setMessage] = useState("");
 
-    const ma_sv = localStorage.getItem("ma_sv");
+    const masv = localStorage.getItem("masv");
     const token = localStorage.getItem("token");
 
     const fetchSubjects = async () => {
         try {
             const response = await axios.get(
-                `https://server-quanlydiemsinhvien-production.up.railway.app/api/register-subject/${ma_sv}`,
+                `https://server-quanlydiemsinhvien-production.up.railway.app/api/register-subject/${masv}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -38,19 +38,19 @@ const DangKyMonHoc = () => {
     };
 
     useEffect(() => {
-        if (!ma_sv || !token) {
+        if (!masv || !token) {
             setError("Bạn chưa đăng nhập!");
             return;
         }
         fetchSubjects();
-    }, [ma_sv, token]);
+    }, [masv, token]);
 
     // --- Thêm đăng ký ---
     const handleRegister = async () => {
         try {
             const res = await axios.post(
                 `https://server-quanlydiemsinhvien-production.up.railway.app/api/register-subject`,
-                { ma_sv, ma_lop_mh: newMaLopMH },
+                { masv, ma_lop_mh: newMaLopMH },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -69,7 +69,7 @@ const DangKyMonHoc = () => {
     const handleUpdate = async () => {
         try {
             const res = await axios.put(
-                `https://server-quanlydiemsinhvien-production.up.railway.app/api/register-subject/${ma_sv}/${updateOldMaLopMH}`,
+                `https://server-quanlydiemsinhvien-production.up.railway.app/api/register-subject/${masv}/${updateOldMaLopMH}`,
                 { new_ma_lop_mh: updateNewMaLopMH },
                 {
                     headers: {
@@ -90,7 +90,7 @@ const DangKyMonHoc = () => {
     const handleDelete = async () => {
         try {
             const res = await axios.delete(
-                `https://server-quanlydiemsinhvien-production.up.railway.app/api/register-subject/${ma_sv}/${deleteMaLopMH}`,
+                `https://server-quanlydiemsinhvien-production.up.railway.app/api/register-subject/${masv}/${deleteMaLopMH}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

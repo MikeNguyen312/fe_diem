@@ -5,11 +5,11 @@ import '../stylessv/XemDiem.css';
 const XemDiem = () => {
   const [scores, setScores] = useState([]);
   const [error, setError] = useState("");
-  const ma_sv = localStorage.getItem("ma_sv");
+  const masv = localStorage.getItem("masv");
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!ma_sv || !token) {
+    if (!masv || !token) {
       setError("Bạn chưa đăng nhập!");
       return;
     }
@@ -17,7 +17,7 @@ const XemDiem = () => {
     const fetchScores = async () => {
       try {
         const response = await axios.get(
-          `https://server-quanlydiemsinhvien-production.up.railway.app/api/scores/${ma_sv}`,
+          `https://server-quanlydiemsinhvien-production.up.railway.app/api/scores/${masv}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -37,7 +37,7 @@ const XemDiem = () => {
     };
 
     fetchScores();
-  }, [ma_sv, token]);
+  }, [masv, token]);
 
   return (
     <div>
