@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import '../stylesgv/QuanLiSinhVienLopMH.css';
 
@@ -8,35 +8,12 @@ const QuanLiSinhVienLopMH = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Kiểm tra thông tin khi trang được tải lại
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const magv = localStorage.getItem("magv");
-
-    if (!token || !magv) {
-      setError('Bạn chưa đăng nhập hoặc không tìm thấy mã giảng viên.');
-    } else {
-      setError('');
-    }
-  }, []);
-
   const handleFetchSinhVien = async () => {
     const token = localStorage.getItem("token");
-    const magv = localStorage.getItem("magv");
+    const maGv = localStorage.getItem("magv");
 
-    // Kiểm tra token, mã giảng viên và mã lớp môn học
-    if (!token) {
-      setError('Bạn chưa đăng nhập.');
-      return;
-    }
-
-    if (!magv) {
-      setError('Không tìm thấy mã giảng viên. Vui lòng đăng nhập lại.');
-      return;
-    }
-
-    if (!maLopMH) {
-      setError('Vui lòng nhập mã lớp môn học.');
+    if (!token || !maGv || !maLopMH) {
+      setError('Vui lòng đăng nhập và nhập mã lớp môn học.');
       return;
     }
 
@@ -46,36 +23,28 @@ const QuanLiSinhVienLopMH = () => {
 
     try {
       const response = await axios.get(
-        `https://server-quanlydiemsinhvien-production.up.railway.app/api/teachers/${magv}/lop-mon-hoc/${maLopMH}/sinh-vien`,
+        `https://server-quanlydiemsinhvien-production.up.railway.app/api/teachers/${maGv}/lop-mon-hoc/${maLopMH}/sinh-vien`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
           },
         }
       );
 
-      console.log('Response:', response.data);
-
-      if (response?.data?.success && Array.isArray(response.data.data)) {
+      if (
+        response?.data?.success &&
+        Array.isArray(response?.data?.data)
+      ) {
         setSinhVienList(response.data.data);
       } else {
         setError('Dữ liệu không hợp lệ từ server.');
       }
     } catch (err) {
-      console.error('Lỗi API:', err.response || err);
-
-      if (err.response?.status === 401) {
-        setError('Phiên đăng nhập hết hạn hoặc không hợp lệ. Vui lòng đăng nhập lại.');
-      } else if (err.response?.status === 403) {
-        setError('Bạn không có quyền truy cập danh sách sinh viên của lớp này.');
-      } else {
-        setError(
-          err.response?.data?.message ||
-          err.message ||
-          'Lỗi không xác định khi tải danh sách sinh viên.'
-        );
-      }
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        'Lỗi không xác định khi tải danh sách sinh viên.'
+      );
     } finally {
       setLoading(false);
     }
