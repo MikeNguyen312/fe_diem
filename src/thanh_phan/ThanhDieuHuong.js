@@ -20,14 +20,14 @@ function ThanhDieuHuong() {
           <Link to="/">Trang Chủ</Link>
           <Link to="/dang-ky-mon-hoc">Đăng Ký Môn Học</Link>
           <Link to="/xem-diem">Xem Điểm</Link>
-          <Link to="/xem-thong-tin-sinh-vien">thông tin sinh viên</Link>
+          <Link to="/xem-thong-tin-sinh-vien">Thông Tin Sinh Viên</Link>
         </>
       )}
 
       {role === 'GV' && (
         <>
-          <Link to="/quan-li-sinh-vien-lop-mh">sinh viên lớp môn học</Link>
-          <Link to="/quan-li-lop-mh">Quản lí lớp môn học</Link>
+          <Link to="/quan-li-sinh-vien-lop-mh">Sinh Viên Lớp Môn Học</Link>
+          <Link to="/quan-li-lop-mh">Quản Lí Lớp Môn Học</Link>
           <Link to="/xem-diem-gv">Xem Điểm</Link>
           <Link to="/xem-thong-tin-gv">Thông Tin Giảng Viên</Link>
         </>
