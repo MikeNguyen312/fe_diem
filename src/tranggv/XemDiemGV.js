@@ -9,8 +9,8 @@ const XemDiemGV = () => {
   const [loading, setLoading] = useState(false);
 
   const handleXemDiem = async () => {
-    const token = localStorage.getItem('token');
-    const maGv = localStorage.getItem('magv');
+    const token = localStorage.getItem("token");
+    const maGv = localStorage.getItem("magv");
 
     if (!token || !maGv || !maLopMH) {
       setError('Vui lòng đăng nhập và nhập mã lớp môn học.');

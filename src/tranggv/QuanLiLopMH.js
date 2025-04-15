@@ -9,8 +9,8 @@ const QuanLiLopMH = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem('token');
-      const magv = localStorage.getItem('magv');
+      const token = localStorage.getItem("token");
+      const magv = localStorage.getItem("magv");
 
       if (!token || !magv) {
         setError('Bạn chưa đăng nhập hoặc thiếu mã giảng viên.');

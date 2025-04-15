@@ -9,8 +9,8 @@ const QuanLiSinhVienLopMH = () => {
   const [loading, setLoading] = useState(false);
 
   const handleFetchSinhVien = async () => {
-    const token = localStorage.getItem('token');
-    const maGv = localStorage.getItem('magv');
+    const token = localStorage.getItem("token");
+    const maGv = localStorage.getItem("magv");
 
     if (!token || !maGv || !maLopMH) {
       setError('Vui lòng đăng nhập và nhập mã lớp môn học.');
@@ -27,24 +27,33 @@ const QuanLiSinhVienLopMH = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            // Optional: Thêm Accept để đảm bảo response JSON
+            Accept: 'application/json',
           },
         }
       );
 
-      if (
-        response?.data?.success &&
-        Array.isArray(response?.data?.data)
-      ) {
+      console.log('Response:', response.data);
+
+      if (response?.data?.success && Array.isArray(response.data.data)) {
         setSinhVienList(response.data.data);
       } else {
         setError('Dữ liệu không hợp lệ từ server.');
       }
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-        err.message ||
-        'Lỗi không xác định khi tải danh sách sinh viên.'
-      );
+      console.error('Lỗi API:', err.response || err);
+
+      if (err.response?.status === 401) {
+        setError('Phiên đăng nhập hết hạn hoặc không hợp lệ. Vui lòng đăng nhập lại.');
+      } else if (err.response?.status === 403) {
+        setError('Bạn không có quyền truy cập danh sách sinh viên của lớp này.');
+      } else {
+        setError(
+          err.response?.data?.message ||
+          err.message ||
+          'Lỗi không xác định khi tải danh sách sinh viên.'
+        );
+      }
     } finally {
       setLoading(false);
     }
