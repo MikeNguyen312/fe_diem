@@ -79,6 +79,9 @@ function MonHoc() {
   };
 
   const handleDeleteMonHoc = async (maMh) => {
+    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa môn học này?");
+    if (!confirmDelete) return;
+  
     try {
       await axios.delete(`${API_BASE_URL}/${maMh}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -92,7 +95,7 @@ function MonHoc() {
       setTimeout(() => setError(""), 1000);
     }
   };
-
+  
   const handleEditMonHoc = (monHoc) => {
     setMaMh(monHoc.ma_mh);
     setTenMon(monHoc.ten_mon);

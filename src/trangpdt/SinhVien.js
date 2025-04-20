@@ -129,6 +129,9 @@ function SinhVien() {
   };
 
   const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa sinh viên này?");
+    if (!confirmDelete) return;
+  
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`${API_BASE_URL}/${id}`, {
@@ -143,26 +146,33 @@ function SinhVien() {
       console.error(error);
     }
   };
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`; 
-  };
   
   const handleEditClick = (student) => {
     setIsEditing(true);
     setSelectedId(student.id);
+  
+    // Chuyển đổi ngày sinh về định dạng yyyy-mm-dd
+    const formattedDate = formatDate(student.ngay_sinh);
+  
     setFormData({
       ma_sv: student.ma_sv,
       ho_ten: student.ho_ten,
-      ngay_sinh: formatDate(student.ngay_sinh), 
+      ngay_sinh: formattedDate,  // Cập nhật ngày sinh đúng định dạng
       gioi_tinh: student.gioi_tinh,
       email: student.email,
       ma_lop: student.ma_lop,
     });
   };
+  
+  // Hàm chuyển đổi ngày tháng
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`; // Định dạng yyyy-mm-dd
+  };
+  
   
 
   const handleCancel = () => {

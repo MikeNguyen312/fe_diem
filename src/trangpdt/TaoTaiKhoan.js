@@ -98,23 +98,31 @@ const TaoTaiKhoan = () => {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(
-        `https://server-quanlydiemsinhvien-production.up.railway.app/api/users/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setMessage("Xóa tài khoản thành công!");
-      fetchUsers();
-    } catch (error) {
-      console.error("Lỗi khi xóa người dùng:", error);
-      setError("Không thể xóa người dùng.");
+    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa tài khoản này?");
+    
+    if (confirmDelete) {
+      try {
+        await axios.delete(
+          `https://server-quanlydiemsinhvien-production.up.railway.app/api/users/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setMessage("Xóa tài khoản thành công!");
+        fetchUsers();
+      } catch (error) {
+        console.error("Lỗi khi xóa người dùng:", error);
+        setError("Không thể xóa người dùng.");
+      }
+      clearMessages();
+    } else {
+      setMessage("Hành động xóa bị hủy.");
+      clearMessages();
     }
-    clearMessages();
   };
+  
 
   const handleCancel = () => {
     setEditingUserId(null);

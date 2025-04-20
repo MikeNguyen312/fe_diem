@@ -73,6 +73,7 @@ function Diem() {
     e.preventDefault();
     if (!formData.ma_diem || !formData.ma_sv || !formData.ma_lop_mh || !formData.diem_cc || !formData.diem_gk || !formData.diem_ck) {
       setError("Vui lòng điền đầy đủ thông tin");
+      setTimeout(() => setError(""), 1500);
       return;
     }
     try {
@@ -112,6 +113,9 @@ function Diem() {
   };
 
   const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa điểm này?");
+    if (!confirmDelete) return;
+  
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`${API_BASE_URL}/${id}`, {
@@ -122,9 +126,10 @@ function Diem() {
       setTimeout(() => setSuccessMessage(""), 1500);
     } catch (error) {
       setError(`Lỗi khi xóa điểm: ${error.message}`);
-      setTimeout(() => setSuccessMessage(""), 1500);
+      setTimeout(() => setError(""), 1500);
     }
   };
+  
 
   const handleEditClick = (score) => {
     setIsEditing(true);
@@ -178,11 +183,13 @@ function Diem() {
           placeholder="Mã Điểm"
           value={formData.ma_diem}
           onChange={(e) => setFormData({ ...formData, ma_diem: e.target.value })}
+          disabled={isEditing}
         />
         <select
           name="ma_sv"
           value={formData.ma_sv}
           onChange={(e) => setFormData({ ...formData, ma_sv: e.target.value })}
+          disabled={isEditing}
         >
           <option value="">Chọn Mã Sinh Viên</option>
           {students.map((student) => (
@@ -195,6 +202,7 @@ function Diem() {
           name="ma_lop_mh"
           value={formData.ma_lop_mh}
           onChange={(e) => setFormData({ ...formData, ma_lop_mh: e.target.value })}
+          disabled={isEditing}
         >
           <option value="">Chọn Mã Lớp Môn Học</option>
           {classes.map((cls) => (
@@ -228,6 +236,7 @@ function Diem() {
           name="ma_pdt"
           value={formData.ma_pdt}
           onChange={(e) => setFormData({ ...formData, ma_pdt: e.target.value })}
+          disabled={isEditing}
         >
           <option value="PDT01">PDT01</option>
         </select>
@@ -257,7 +266,6 @@ function Diem() {
           </button>
         )}
       </form>
-
 
       <div className="diem-manager-search-container">
         <input
