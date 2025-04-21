@@ -151,30 +151,32 @@ function SinhVien() {
     setIsEditing(true);
     setSelectedId(student.id);
   
-    // Chuyển đổi ngày sinh về định dạng yyyy-mm-dd
     const formattedDate = formatDate(student.ngay_sinh);
   
     setFormData({
       ma_sv: student.ma_sv,
       ho_ten: student.ho_ten,
-      ngay_sinh: formattedDate,  // Cập nhật ngày sinh đúng định dạng
+      ngay_sinh: formattedDate,  
       gioi_tinh: student.gioi_tinh,
       email: student.email,
       ma_lop: student.ma_lop,
     });
   };
   
-  // Hàm chuyển đổi ngày tháng
+  
   const formatDate = (dateString) => {
+    if (dateString.includes("/")) {
+      const [day, month, year] = dateString.split("/");
+      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    }
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`; // Định dạng yyyy-mm-dd
+    return `${year}-${month}-${day}`;
   };
   
   
-
   const handleCancel = () => {
     resetForm();
   };
@@ -231,16 +233,13 @@ function SinhVien() {
           </select>
         </div>
         <div className="form-container">
-          {!isEditing && (
-            <button type="button" onClick={handleAdd}>
-              Thêm sinh viên
-            </button>
-          )}
+          <button type="button" onClick={handleAdd} disabled={isEditing}>
+            Thêm sinh viên
+          </button>
+          <button type="button" onClick={handleEdit} disabled={!isEditing}>
+            Cập nhật sinh viên
+          </button>
           {isEditing && (
-            <>
-              <button type="button" onClick={handleEdit}>
-                Cập nhật sinh viên
-              </button>
               <button
                 type="button"
                 className="sinhvien-button cancel-button"
@@ -248,12 +247,11 @@ function SinhVien() {
               >
                 Hủy
               </button>
-            </>
           )}
         </div>
       </form>
 
-      <div className="search-container">
+      <div className="search-container">~
         <input
           type="text"
           placeholder="Tìm kiếm theo mã SV hoặc họ tên"
