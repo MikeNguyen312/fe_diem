@@ -50,7 +50,7 @@ const DangKyMonHoc = () => {
         try {
             const res = await axios.post(
                 `https://server-quanlydiemsinhvien-production.up.railway.app/api/register-subject`,
-                { masv, ma_lop_mh: newMaLopMH },
+                { ma_sv: masv, ma_lop_mh: newMaLopMH }, // Đổi tên 'masv' thành 'ma_sv'
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -64,6 +64,7 @@ const DangKyMonHoc = () => {
             setMessage(err.response?.data?.message || "Lỗi khi đăng ký môn học");
         }
     };
+    
 
     // --- Cập nhật đăng ký ---
     const handleUpdate = async () => {
