@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import '../styles/GiangVien.css';
 
-const API_BASE_URL = "https://server-quanlydiemsinhvien-production.up.railway.app/api/teachers";
-const API_SUBJECTS_URL = "https://server-quanlydiemsinhvien-production.up.railway.app/api/subjects";
+const API_BASE_URL = "https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/teachers";
+const API_SUBJECTS_URL = "https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/subjects";
 
 function GiangVien() {
   const [giangViens, setGiangViens] = useState([]);
@@ -166,3 +166,21 @@ function GiangVien() {
 }
 
 export default GiangVien;
+
+
+// const handleDeleteGiangVien = async (ma_gv) => {
+//   if (window.confirm("Bạn có chắc chắn muốn xóa giảng viên này không?")) {
+//     try {
+//       await axios.delete(`${API_BASE_URL}/${ma_gv}`, {
+//         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//       });
+//       setMessage("Xóa giảng viên thành công!");
+//       fetchGiangViens();
+//       setTimeout(() => setMessage(""), 1000);
+//     } catch (error) {
+//       console.error("Lỗi khi xóa giảng viên:", error);
+//       setError("Xóa thất bại. Có thể do quyền hạn hoặc lỗi hệ thống.");
+//       setTimeout(() => setError(""), 1000);
+//     }
+//   }
+// };

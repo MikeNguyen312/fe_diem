@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/MonHoc.css";
 
-const API_BASE_URL = "https://server-quanlydiemsinhvien-production.up.railway.app/api/subjects";
+const API_BASE_URL = "https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/subjects";
 
 function MonHoc() {
   const [monHocs, setMonHocs] = useState([]);

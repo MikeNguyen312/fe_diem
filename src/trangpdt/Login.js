@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Login.css';
 
-const API_BASE_URL = 'https://server-quanlydiemsinhvien-production.up.railway.app';
+const API_BASE_URL = 'https://server-quanlydiemsinhvien-production-e8d7.up.railway.app';
 const API_LOGIN_URL = `${API_BASE_URL}/api/auth/login`;
 
 function Login({ setIsAuthenticated }) {
@@ -26,9 +26,7 @@ function Login({ setIsAuthenticated }) {
 
         try {
             const response = await axios.post(API_LOGIN_URL, { username, password });
-
             const { token, role ,magv ,masv } = response.data;
-
             localStorage.setItem('token', token);
             localStorage.setItem('role', role);
             localStorage.setItem('magv', magv);

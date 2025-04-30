@@ -24,7 +24,7 @@ const TaoTaiKhoan = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "https://server-quanlydiemsinhvien-production.up.railway.app/api/users",
+        "https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/users",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,7 +52,7 @@ const TaoTaiKhoan = () => {
     try {
       if (editingUserId) {
         await axios.put(
-          `https://server-quanlydiemsinhvien-production.up.railway.app/api/users/${editingUserId}`,
+          `https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/users/${editingUserId}`,
           formData,
           {
             headers: {
@@ -64,7 +64,7 @@ const TaoTaiKhoan = () => {
         setEditingUserId(null);
       } else {
         await axios.post(
-          "https://server-quanlydiemsinhvien-production.up.railway.app/api/auth/register",
+          "https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/auth/register",
           formData,
           {
             headers: {
@@ -103,7 +103,7 @@ const TaoTaiKhoan = () => {
     if (confirmDelete) {
       try {
         await axios.delete(
-          `https://server-quanlydiemsinhvien-production.up.railway.app/api/users/${id}`,
+          `https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/users/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

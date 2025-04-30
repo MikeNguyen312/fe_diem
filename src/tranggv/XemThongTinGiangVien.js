@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../stylesgv/XemThongTinGiangVien.css";
 
-const API_BASE_URL = "https://server-quanlydiemsinhvien-production.up.railway.app/api/teachers";
+const API_BASE_URL = "https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/teachers";
 
 const XemThongTinGiangVien = () => {
   const [teacherInfo, setTeacherInfo] = useState(null);

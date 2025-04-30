@@ -6,10 +6,9 @@ function ThanhDieuHuong() {
   const [role, setRole] = useState('');
 
   useEffect(() => {
-    // Lấy role từ localStorage sau khi người dùng đăng nhập
     const userRole = localStorage.getItem('role');
     if (userRole) {
-      setRole(userRole);  // Lưu role vào state
+      setRole(userRole);  
     }
   }, []);
 

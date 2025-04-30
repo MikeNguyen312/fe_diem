@@ -17,7 +17,7 @@ const DangKyMonHoc = () => {
     const fetchSubjects = async () => {
         try {
             const response = await axios.get(
-                `https://server-quanlydiemsinhvien-production.up.railway.app/api/register-subject/${masv}`,
+                `https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/register-subject/${masv}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ const DangKyMonHoc = () => {
     const handleRegister = async () => {
         try {
             const res = await axios.post(
-                `https://server-quanlydiemsinhvien-production.up.railway.app/api/register-subject`,
+                `https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/register-subject`,
                 { ma_sv: masv, ma_lop_mh: newMaLopMH }, // Đổi tên 'masv' thành 'ma_sv'
                 {
                     headers: {
@@ -70,7 +70,7 @@ const DangKyMonHoc = () => {
     const handleUpdate = async () => {
         try {
             const res = await axios.put(
-                `https://server-quanlydiemsinhvien-production.up.railway.app/api/register-subject/${masv}/${updateOldMaLopMH}`,
+                `https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/register-subject/${masv}/${updateOldMaLopMH}`,
                 { new_ma_lop_mh: updateNewMaLopMH },
                 {
                     headers: {
@@ -91,7 +91,7 @@ const DangKyMonHoc = () => {
     const handleDelete = async () => {
         try {
             const res = await axios.delete(
-                `https://server-quanlydiemsinhvien-production.up.railway.app/api/register-subject/${masv}/${deleteMaLopMH}`,
+                `https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/register-subject/${masv}/${deleteMaLopMH}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

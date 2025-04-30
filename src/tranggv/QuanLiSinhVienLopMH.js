@@ -23,7 +23,7 @@ const QuanLiSinhVienLopMH = () => {
 
     try {
       const response = await axios.get(
-        `https://server-quanlydiemsinhvien-production.up.railway.app/api/teachers/${maGv}/lop-mon-hoc/${maLopMH}/sinh-vien`,
+        `https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/teachers/${maGv}/lop-mon-hoc/${maLopMH}/sinh-vien`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

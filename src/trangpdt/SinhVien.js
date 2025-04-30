@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/SinhVien.css";
 
-const API_BASE_URL = "https://server-quanlydiemsinhvien-production.up.railway.app/api/students";
-const CLASS_API_URL = "https://server-quanlydiemsinhvien-production.up.railway.app/api/class-subject/getAllClass";
+const API_BASE_URL = "https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/students";
+const CLASS_API_URL = "https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/class-subject/getAllClass";
 
 function SinhVien() {
   const [students, setStudents] = useState([]);
@@ -305,3 +305,34 @@ function SinhVien() {
 }
 
 export default SinhVien;
+
+
+
+
+// npm install react-datepicker
+// npm install date-fns
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
+// import { parseISO } from "date-fns";
+// import { format } from "date-fns";
+
+// ...
+
+// <DatePicker
+//   selected={formData.ngay_sinh ? parseISO(formData.ngay_sinh) : null}
+//   onChange={(date) => {
+//     const formattedDate = format(date, "yyyy-MM-dd"); // để gửi đúng về backend
+//     setFormData({ ...formData, ngay_sinh: formattedDate });
+//   }}
+//   dateFormat="dd/MM/yyyy" // định dạng hiển thị trên input
+//   placeholderText="Ngày sinh (dd/mm/yyyy)"
+// />
+// <label>
+//   Ngày sinh (dd/mm/yyyy):
+//   <input
+//     type="date"
+//     name="ngay_sinh"
+//     value={formData.ngay_sinh}
+//     onChange={handleChange}
+//   />
+// </label>

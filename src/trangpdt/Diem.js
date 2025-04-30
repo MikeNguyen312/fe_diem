@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Diem.css";
 
-const API_BASE_URL = "https://server-quanlydiemsinhvien-production.up.railway.app/api/scores";
+const API_BASE_URL = "https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/scores";
 
 function Diem() {
   const [scores, setScores] = useState([]);
@@ -44,10 +44,10 @@ function Diem() {
     try {
       const token = localStorage.getItem("token");
       const [studentsRes, classesRes] = await Promise.all([
-        axios.get("https://server-quanlydiemsinhvien-production.up.railway.app/api/students", {
+        axios.get("https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/students", {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        axios.get("https://server-quanlydiemsinhvien-production.up.railway.app/api/class-subject", {
+        axios.get("https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/class-subject", {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -59,7 +59,7 @@ function Diem() {
         setStudents([]);
       }
       if (Array.isArray(classesRes.data.data)) {
-        setClasses(classesRes.data.data); 
+        setClasses(classesRes.data.data);
       } else {
         console.error("class-subject không trả về mảng hoặc không có data");
         setClasses([]);
@@ -71,11 +71,27 @@ function Diem() {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    if (!formData.ma_diem || !formData.ma_sv || !formData.ma_lop_mh || !formData.diem_cc || !formData.diem_gk || !formData.diem_ck) {
+    if (
+      !formData.ma_diem ||
+      !formData.ma_sv ||
+      !formData.ma_lop_mh ||
+      !formData.diem_cc ||
+      !formData.diem_gk ||
+      !formData.diem_ck
+    ) {
       setError("Vui lòng điền đầy đủ thông tin");
       setTimeout(() => setError(""), 1500);
       return;
     }
+  
+    // Kiểm tra trùng mã điểm
+    const isDuplicate = scores.some((score) => score.ma_diem === formData.ma_diem);
+    if (isDuplicate) {
+      setError("Mã điểm đã tồn tại, vui lòng chọn mã khác");
+      setTimeout(() => setError(""), 2000);
+      return;
+    }
+  
     try {
       const token = localStorage.getItem("token");
       await axios.post(`${API_BASE_URL}`, formData, {
@@ -90,6 +106,7 @@ function Diem() {
       setTimeout(() => setSuccessMessage(""), 1500);
     }
   };
+  
 
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -99,9 +116,13 @@ function Diem() {
     }
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`${API_BASE_URL}/update/ma_sv/${formData.ma_sv}`, formData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.put(
+        `${API_BASE_URL}/update/ma_sv/${formData.ma_sv}`,
+        formData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       fetchScores();
       resetForm();
       setSuccessMessage("Cập nhật điểm thành công!");
@@ -115,7 +136,7 @@ function Diem() {
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa điểm này?");
     if (!confirmDelete) return;
-  
+
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`${API_BASE_URL}/${id}`, {
@@ -129,7 +150,6 @@ function Diem() {
       setTimeout(() => setError(""), 1500);
     }
   };
-  
 
   const handleEditClick = (score) => {
     setIsEditing(true);
@@ -144,7 +164,7 @@ function Diem() {
       ma_pdt: score.ma_pdt,
     });
   };
-  
+
   const resetForm = () => {
     setIsEditing(false);
     setSelectedId(null);
@@ -159,30 +179,48 @@ function Diem() {
     });
     setError("");
   };
-  
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (["diem_cc", "diem_gk", "diem_ck"].includes(name)) {
+      const number = parseFloat(value);
+      if (number < 0 || number > 10) return;
+    }
+
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
 
-  const filteredScores = scores.filter((score) =>
-    score.ma_sv.toLowerCase().includes(search.toLowerCase()) ||
-    score.ma_lop_mh.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredScores = scores
+  .filter(
+    (score) =>
+      score.ma_sv.toLowerCase().includes(search.toLowerCase()) ||
+      score.ma_lop_mh.toLowerCase().includes(search.toLowerCase())
+  )
+  .sort((a, b) => parseFloat(b.diem_ck) - parseFloat(a.diem_ck));
+
 
   return (
     <div className="diem-manager-container">
       <h2>Quản lí điểm</h2>
       {error && <div className="diem-manager-error-message">{error}</div>}
-      {successMessage && <div className="diem-manager-success-message">{successMessage}</div>}
-      
+      {successMessage && (
+        <div className="diem-manager-success-message">{successMessage}</div>
+      )}
+
       <form className="diem-manager-form-container">
         <input
           type="text"
           name="ma_diem"
           placeholder="Mã Điểm"
           value={formData.ma_diem}
-          onChange={(e) => setFormData({ ...formData, ma_diem: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, ma_diem: e.target.value })
+          }
           disabled={isEditing}
         />
         <select
@@ -201,7 +239,9 @@ function Diem() {
         <select
           name="ma_lop_mh"
           value={formData.ma_lop_mh}
-          onChange={(e) => setFormData({ ...formData, ma_lop_mh: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, ma_lop_mh: e.target.value })
+          }
           disabled={isEditing}
         >
           <option value="">Chọn Mã Lớp Môn Học</option>
@@ -214,24 +254,36 @@ function Diem() {
         <input
           type="number"
           name="diem_cc"
-          placeholder="Điểm CC"
+          placeholder="Điểm Chuyên Cần"
           value={formData.diem_cc}
-          onChange={(e) => setFormData({ ...formData, diem_cc: e.target.value })}
+          onChange={handleChange}
+          min="0"
+          max="10"
+          step="0.1"
         />
+
         <input
           type="number"
           name="diem_gk"
-          placeholder="Điểm GK"
+          placeholder="Điểm Giữa Kì"
           value={formData.diem_gk}
-          onChange={(e) => setFormData({ ...formData, diem_gk: e.target.value })}
+          onChange={handleChange}
+          min="0"
+          max="10"
+          step="0.1"
         />
+
         <input
           type="number"
           name="diem_ck"
-          placeholder="Điểm CK"
+          placeholder="Điểm Cuối Kì"
           value={formData.diem_ck}
-          onChange={(e) => setFormData({ ...formData, diem_ck: e.target.value })}
+          onChange={handleChange}
+          min="0"
+          max="10"
+          step="0.1"
         />
+
         <select
           name="ma_pdt"
           value={formData.ma_pdt}
@@ -312,3 +364,42 @@ function Diem() {
 }
 
 export default Diem;
+// const handleChange = (e) => {
+//   const { name, value } = e.target;
+
+//   if (["diem_cc", "diem_gk", "diem_ck"].includes(name)) {
+//     const number = parseFloat(value);
+//     if (number < 0 || number > 10) return; // Không cập nhật nếu ngoài khoảng
+//   }
+
+//   setFormData({ ...formData, [name]: value });
+// };
+// <input
+//   type="number"
+//   name="diem_cc"
+//   value={formData.diem_cc}
+//   onChange={handleChange}
+//   min="0"
+//   max="10"
+//   step="0.1"
+// />
+
+// <input
+//   type="number"
+//   name="diem_gk"
+//   value={formData.diem_gk}
+//   onChange={handleChange}
+//   min="0"
+//   max="10"
+//   step="0.1"
+// />
+
+// <input
+//   type="number"
+//   name="diem_ck"
+//   value={formData.diem_ck}
+//   onChange={handleChange}
+//   min="0"
+//   max="10"
+//   step="0.1"
+// />

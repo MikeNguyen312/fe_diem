@@ -20,7 +20,7 @@ const QuanLiLopMH = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://server-quanlydiemsinhvien-production.up.railway.app/api/teachers/${magv}/lop-mon-hoc`,
+          `https://server-quanlydiemsinhvien-production-e8d7.up.railway.app/api/teachers/${magv}/lop-mon-hoc`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

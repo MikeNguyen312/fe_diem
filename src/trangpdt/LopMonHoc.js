@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/LopMonHoc.css";
 
-const apiBase = "https://server-quanlydiemsinhvien-production.up.railway.app";
+const apiBase = "https://server-quanlydiemsinhvien-production-e8d7.up.railway.app";
 
 const LopMonHoc = () => {
   const [data, setData] = useState([]);
@@ -73,6 +73,18 @@ const LopMonHoc = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    const ts_cc = Number(formData.trong_so_cc);
+    const ts_gk = Number(formData.trong_so_gk);
+    const ts_ck = Number(formData.trong_so_ck);
+    const totalWeight = ts_cc + ts_gk + ts_ck;
+  
+    if (totalWeight !== 100) {
+      setError("Tổng trọng số (CC + GK + CK) phải bằng 100");
+      setTimeout(() => setError(""), 2000);
+      return;
+    }
+  
     try {
       if (editing) {
         await axios.put(`${apiBase}/api/class-subject/update/${formData.ma_lop_mh}`, formData, {
@@ -85,6 +97,7 @@ const LopMonHoc = () => {
         });
         setMessage("Thêm lớp môn học thành công.");
       }
+  
       setFormData({
         ma_lop_mh: "",
         ma_mh: "",
@@ -101,11 +114,13 @@ const LopMonHoc = () => {
     } catch (err) {
       setError("Lỗi khi lưu lớp môn học.");
     }
+  
     setTimeout(() => {
       setMessage("");
       setError("");
     }, 1000);
   };
+  
 
   const handleEdit = (item) => {
     setFormData(item);

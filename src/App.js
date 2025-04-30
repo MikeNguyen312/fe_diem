@@ -58,7 +58,7 @@ function App() {
       case 'PDT':
         return <Navigate to="/diem" />;
       default:
-        return <Navigate to="/login" />;
+        return <Navigate to="/trang-chu" />;
     }
   };
 
@@ -98,7 +98,6 @@ function App() {
             <Route path="/dang-ky-mon-hoc" element={<PrivateRoute element={<DangKyMonHoc />} isAuthenticated={isAuthenticated} />} />
             <Route path="/xem-diem" element={<PrivateRoute element={<XemDiem />} isAuthenticated={isAuthenticated} />} />
             <Route path="/Xem-Thong-Tin-Sinh-Vien" element={<PrivateRoute element={<XemThongTinSinhVien />} isAuthenticated={isAuthenticated} />} />
-            <Route path="/mon-hoc" element={<PrivateRoute element={<MonHoc />} isAuthenticated={isAuthenticated} />} />
             <Route path="/lop-mon-hoc" element={<PrivateRoute element={<LopMonHoc />} isAuthenticated={isAuthenticated} />} />
             <Route path="/tao-tai-khoan" element={<PrivateRoute element={<TaoTaiKhoan />} isAuthenticated={isAuthenticated} />} />
 
